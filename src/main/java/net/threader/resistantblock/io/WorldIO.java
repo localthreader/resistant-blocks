@@ -1,5 +1,7 @@
 package net.threader.resistantblock.io;
 
+import net.threader.resistantblock.Util;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.json.simple.JSONObject;
 
@@ -26,7 +28,17 @@ public class WorldIO {
         this.object = BlockIOManager.extractJSON(file);
     }
 
-    private void write(Block block, int quantity) {
+    public int getCurrentResistance(Block block) {
+        if(!object.containsKey(blockToString(block))) {
+            if(Util.isResistantBlock(block.getType())) {
+                return Util.getInitialResistance(block.getType());
+            }
+            return 0;
+        }
+        return (int) object.get(blockToString(block));
+    }
+
+    public void write(Block block, int quantity) {
         object.put(blockToString(block), quantity);
     }
 
@@ -38,7 +50,11 @@ public class WorldIO {
         }
     }
 
-    public String blockToString(Block block) {
+    public void remove(Block block) {
+        object.remove(blockToString(block));
+    }
+
+    private String blockToString(Block block) {
         return block.getX() + ":" + block.getY() + ":" + block.getZ();
     }
 

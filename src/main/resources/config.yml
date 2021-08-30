@@ -1,0 +1,8 @@
+block_resistances:
+  obsidian: 10
+  bedrock: 30
+
+explosion_damages:
+  tnt: 2
+  creeper: 1
+  end_crystal: 4
