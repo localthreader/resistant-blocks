@@ -1,5 +1,7 @@
 package net.threader.resistantblock;
 
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ResistantBlocks extends JavaPlugin {
@@ -9,7 +11,6 @@ public class ResistantBlocks extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
     }
 
     public static ResistantBlocks instance() {
