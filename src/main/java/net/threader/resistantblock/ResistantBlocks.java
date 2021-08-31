@@ -1,5 +1,6 @@
 package net.threader.resistantblock;
 
+import net.threader.resistantblock.listener.BlockBreakListener;
 import net.threader.resistantblock.listener.EntityExplodeListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -14,6 +15,7 @@ public class ResistantBlocks extends JavaPlugin {
     public void onEnable() {
         instance = this;
         Bukkit.getPluginManager().registerEvents(new EntityExplodeListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockBreakListener(), this);
     }
 
     public static ResistantBlocks instance() {
