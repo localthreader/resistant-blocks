@@ -1,4 +1,4 @@
-main: net.threader.resistentblock.ResistentBlocks
-name: ResistentBlocks
+main: net.threader.resistantblock.ResistantBlocks
+name: ResistantBlocks
 version: 1.0
 api-version: 1.16
