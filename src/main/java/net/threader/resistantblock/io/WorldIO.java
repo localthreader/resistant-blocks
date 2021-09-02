@@ -1,6 +1,8 @@
 package net.threader.resistantblock.io;
 
+import net.threader.resistantblock.ResistantBlocks;
 import net.threader.resistantblock.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.json.simple.JSONObject;
@@ -8,10 +10,14 @@ import org.json.simple.JSONObject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public class WorldIO {
 
-    private File file;
+    private final File file;
+    private final Map<String, Integer> cached = new HashMap<>();
     private JSONObject object;
 
     public WorldIO(File file) {
@@ -29,6 +35,9 @@ public class WorldIO {
     }
 
     public int getCurrentResistance(Block block) {
+        if(cached.containsKey(blockToString(block))) {
+            return cached.get(blockToString(block));
+        }
         if(!object.containsKey(blockToString(block))) {
             if(Util.isResistantBlock(block.getType())) {
                 return Util.getInitialResistance(block.getType());
@@ -39,18 +48,23 @@ public class WorldIO {
     }
 
     public void write(Block block, int quantity) {
+        cached.remove(blockToString(block));
+        cached.put(blockToString(block), quantity);
         object.put(blockToString(block), quantity);
     }
 
     public void save() {
-        try (FileWriter writer = new FileWriter(file)) {
-            writer.write(object.toJSONString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(ResistantBlocks.instance(), () -> {
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(object.toJSONString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void remove(Block block) {
+        cached.remove(blockToString(block));
         object.remove(blockToString(block));
     }
 
