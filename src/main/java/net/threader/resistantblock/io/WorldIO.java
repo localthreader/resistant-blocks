@@ -22,8 +22,10 @@ public class WorldIO {
 
     public WorldIO(File file) {
         this.file = file;
+        boolean first = false;
         try {
             if(!file.exists()) {
+                first = true;
                 file.createNewFile();
                 this.object = new JSONObject();
                 this.save();
@@ -31,7 +33,9 @@ public class WorldIO {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.object = BlockIOManager.extractJSON(file);
+        if(!first) {
+            this.object = BlockIOManager.extractJSON(file);
+        }
     }
 
     public int getCurrentResistance(Block block) {
