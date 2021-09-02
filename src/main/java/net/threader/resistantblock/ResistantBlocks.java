@@ -1,5 +1,6 @@
 package net.threader.resistantblock;
 
+import net.threader.resistantblock.command.ResistantBlockCommand;
 import net.threader.resistantblock.listener.BlockListeners;
 import net.threader.resistantblock.listener.EntityExplodeListener;
 import org.bukkit.Bukkit;
@@ -19,14 +20,12 @@ public class ResistantBlocks extends JavaPlugin {
         saveDefaultConfig();
         WORLD_DIR = new File(ResistantBlocks.instance().getDataFolder(), "worlds");
         if(!WORLD_DIR.exists()) {
-            try {
-                WORLD_DIR.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            WORLD_DIR.mkdirs();
         }
         Bukkit.getPluginManager().registerEvents(new EntityExplodeListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockListeners(), this);
+
+        getCommand("resistantblocks").setExecutor(new ResistantBlockCommand());
     }
 
     public static ResistantBlocks instance() {
