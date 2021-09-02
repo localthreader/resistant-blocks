@@ -48,6 +48,6 @@ public class BlockIOManager {
     }
 
     public static void remove(Block block) {
-        getWorldIO(block.getWorld().getUID()).getCurrentResistance(block);
+        getWorldIO(block.getWorld().getUID()).remove(block);
     }
 }

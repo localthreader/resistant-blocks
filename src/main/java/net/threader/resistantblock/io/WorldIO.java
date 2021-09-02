@@ -55,6 +55,7 @@ public class WorldIO {
         cached.remove(blockToString(block));
         cached.put(blockToString(block), quantity);
         object.put(blockToString(block), quantity);
+        save();
     }
 
     public void save() {
@@ -70,6 +71,7 @@ public class WorldIO {
     public void remove(Block block) {
         cached.remove(blockToString(block));
         object.remove(blockToString(block));
+        save();
     }
 
     private String blockToString(Block block) {
