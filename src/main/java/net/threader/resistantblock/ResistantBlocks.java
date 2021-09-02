@@ -12,6 +12,7 @@ public class ResistantBlocks extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new EntityExplodeListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockListeners(), this);
     }
