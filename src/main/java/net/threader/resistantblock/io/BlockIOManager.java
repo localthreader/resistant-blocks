@@ -18,13 +18,12 @@ import java.util.UUID;
 public class BlockIOManager {
 
     public static final Map<UUID, WorldIO> worldsIO = new HashMap<>();
-    public static final File WORLD_DIR = new File(ResistantBlocks.instance().getDataFolder(), "worlds");
 
     public static WorldIO getWorldIO(UUID world) {
         if (worldsIO.containsKey(world)) {
             return worldsIO.get(world);
         }
-        WorldIO io = new WorldIO(new File(WORLD_DIR, world.toString() + ".json"));
+        WorldIO io = new WorldIO(new File(ResistantBlocks.WORLD_DIR, world.toString() + ".json"));
         worldsIO.put(world, io);
         return io;
     }
