@@ -3,6 +3,7 @@ package net.threader.resistantblock;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
+import java.util.Arrays;
 import java.util.Set;
 
 public class BlockMatrix3d {
@@ -17,13 +18,13 @@ public class BlockMatrix3d {
 
     public Block[][][] expand() {
         Block[][][] intersected = new Block[radius*2+1][radius*2+1][radius*2+1];
-        for(int i = 0; i<radius*2+1; i++) {
-            for(int j = 0; j<radius*2+1; j++) {
-                for(int k = 0; k<radius*2+1; k++) {
-                    int x = center.getBlockX() + (j - radius);
-                    int y = center.getBlockY() + (i - radius);
-                    int z = center.getBlockZ() + (k - radius);
-                    intersected[i][j][k] = new Location(center.getWorld(), x, y, z).getBlock();
+        for(int y = 0; y<radius*2+1; y++) {
+            for(int x = 0; x<radius*2+1; x++) {
+                for(int z = 0; z<radius*2+1; z++) {
+                    int newX = center.getBlockX() + (x - radius);
+                    int newY = center.getBlockY() + (y - radius);
+                    int newZ = center.getBlockZ() + (z - radius);
+                    intersected[y][x][z] = new Location(center.getWorld(), newX, newY, newZ).getBlock();
                 }
             }
         }
@@ -42,6 +43,28 @@ public class BlockMatrix3d {
         vertex[6] = expand[radius*2][0][radius*2];
         vertex[7] = expand[radius*2][radius*2][radius*2];
         return vertex;
+    }
+
+    public Block[][] faceX(int index) {
+        Block[][] face = new Block[radius*2+1][radius*2+1];
+        Block[][][] expanded = expand();
+        for(int i = 0; i<radius*2+1; i++) {
+            for(int j = 0; j<radius*2+1; j++) {
+                face[i][j] = expanded[i][index][j];
+            }
+        }
+        return face;
+    }
+
+    public Block[][] faceZ(int index) {
+        Block[][] face = new Block[radius*2+1][radius*2+1];
+        Block[][][] expanded = expand();
+        for(int i = 0; i<radius*2+1; i++) {
+            for(int j = 0; j<radius*2+1; j++) {
+                face[i][j] = expanded[i][j][index];
+            }
+        }
+        return face;
     }
 
 }
