@@ -5,7 +5,9 @@ import org.bukkit.block.Block;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class BlockMatrix3d {
 
@@ -18,18 +20,18 @@ public class BlockMatrix3d {
     }
 
     public Block[][][] expand() {
-        Block[][][] intersected = new Block[radius*2+1][radius*2+1][radius*2+1];
+        Block[][][] expanded = new Block[radius*2+1][radius*2+1][radius*2+1];
         for(int y = 0; y<radius*2+1; y++) {
             for(int x = 0; x<radius*2+1; x++) {
                 for(int z = 0; z<radius*2+1; z++) {
                     int newX = center.getBlockX() + (x - radius);
                     int newY = center.getBlockY() + (y - radius);
                     int newZ = center.getBlockZ() + (z - radius);
-                    intersected[y][x][z] = new Location(center.getWorld(), newX, newY, newZ).getBlock();
+                    expanded[y][x][z] = new Location(center.getWorld(), newX, newY, newZ).getBlock();
                 }
             }
         }
-        return intersected;
+        return expanded;
     }
 
     public Block[] vertex() {
@@ -46,34 +48,40 @@ public class BlockMatrix3d {
         return vertex;
     }
 
-    public Block[][] faceX(int index) {
-        Block[][] face = new Block[radius*2+1][radius*2+1];
+    public Block[] faceX(int index) {
+        Block[] face = new Block[(radius*2+1)*(radius*2+1)];
         Block[][][] expanded = expand();
+        int in = 0;
         for(int i = 0; i<radius*2+1; i++) {
             for(int j = 0; j<radius*2+1; j++) {
-                face[i][j] = expanded[i][index][j];
+                face[in] = expanded[i][index][j];
+                in++;
             }
         }
         return face;
     }
 
-    public Block[][] faceZ(int index) {
-        Block[][] face = new Block[radius*2+1][radius*2+1];
+    public Block[] faceZ(int index) {
+        Block[] face = new Block[(radius*2+1)*(radius*2+1)];
         Block[][][] expanded = expand();
+        int in = 0;
         for(int i = 0; i<radius*2+1; i++) {
             for(int j = 0; j<radius*2+1; j++) {
-                face[i][j] = expanded[i][j][index];
+                face[in] = expanded[i][j][index];
+                in++;
             }
         }
         return face;
     }
 
-    public Block[][] faceY(int index) {
-        Block[][] face = new Block[radius*2+1][radius*2+1];
+    public Block[] faceY(int index) {
+        Block[] face = new Block[(radius*2+1)*(radius*2+1)];
         Block[][][] expanded = expand();
+        int in = 0;
         for(int i = 0; i<radius*2+1; i++) {
             for(int j = 0; j<radius*2+1; j++) {
-                face[i][j] = expanded[index][i][j];
+                face[in] = expanded[index][i][j];
+                in++;
             }
         }
         return face;
@@ -96,6 +104,21 @@ public class BlockMatrix3d {
             }
         }
         return (Block[]) edge.toArray();
+    }
+
+    public Block[][][] subtract(Block... blocks) {
+        Set<Block> blockSet = new HashSet<>(new HashSet<>(Arrays.asList(blocks)));
+        Block[][][] expanded = expand();
+        for(int i = 0; i < radius*2+1; i++) {
+            for(int j = 0; j<radius*2+1; j++) {
+                for(int k = 0; k<radius*2+1; k++) {
+                    if(blockSet.contains(expanded[i][j][k])) {
+                        expanded[i][j][k] = null;
+                    }
+                }
+            }
+        }
+        return expanded;
     }
 
 }
