@@ -3,8 +3,9 @@ package net.threader.resistantblock;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
+import java.util.List;
 
 public class BlockMatrix3d {
 
@@ -65,6 +66,25 @@ public class BlockMatrix3d {
             }
         }
         return face;
+    }
+
+    public Block[] edge() {
+        List<Block> edge = new ArrayList<>();
+        Block[][][] expanded = expand();
+        for(int y = 0; y<radius*2+1; y++) {
+            for(int x = 0; x<radius*2+1; x++) {
+                for(int z = 0; z<radius*2+1; z++) {
+                    if((y == 0 || y == radius*2) && (x == 0 || x == radius*2)) {
+                        edge.add(expanded[y][x][z]);
+                    } else if ((z == 0 || z == radius*2) && (y == 0 || y == radius*2)) {
+                        edge.add(expanded[y][x][z]);
+                    } else if ((x == 0 || x == radius*2) && (z == 0 || z == radius*2)) {
+                        edge.add(expanded[y][x][z]);
+                    }
+                }
+            }
+        }
+        return (Block[]) edge.toArray();
     }
 
 }

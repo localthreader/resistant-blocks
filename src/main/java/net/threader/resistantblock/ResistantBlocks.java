@@ -4,6 +4,8 @@ import net.threader.resistantblock.command.ResistantBlockCommand;
 import net.threader.resistantblock.listener.BlockListeners;
 import net.threader.resistantblock.listener.EntityExplodeListener;
 import org.bukkit.Bukkit;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
