@@ -68,6 +68,17 @@ public class BlockMatrix3d {
         return face;
     }
 
+    public Block[][] faceY(int index) {
+        Block[][] face = new Block[radius*2+1][radius*2+1];
+        Block[][][] expanded = expand();
+        for(int i = 0; i<radius*2+1; i++) {
+            for(int j = 0; j<radius*2+1; j++) {
+                face[i][j] = expanded[index][i][j];
+            }
+        }
+        return face;
+    }
+
     public Block[] edge() {
         List<Block> edge = new ArrayList<>();
         Block[][][] expanded = expand();
